@@ -20,7 +20,25 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
-dependencies = []
+dependencies = [
+  "torch > 2.6",
+  "transformers >= 5.0.0",
+  "accelerate >= 1.12",
+  "kernels",
+  "torchdata",
+  "webdataset",
+  "datasets",
+  "fire",
+  "loguru",
+  "mlflow",
+  "nvidia-ml-py",          # "pynvml" replacement
+  "psutil",
+  "omegaconf",
+  "tenacity",
+  "bitsandbytes",
+  "dacite",
+]
+
 
 [project.urls]
 Documentation = "https://github.com/Chenchao Zhao/fandb#readme"
@@ -31,27 +49,104 @@ Source = "https://github.com/Chenchao Zhao/fandb"
 path = "src/fandb/__about__.py"
 
 [tool.hatch.envs.types]
-extra-dependencies = [
-  "mypy>=1.0.0",
-]
+extra-dependencies = ["pytest", "mypy"]
 [tool.hatch.envs.types.scripts]
 check = "mypy --install-types --non-interactive {args:src/fandb tests}"
 
+[tool.hatch.envs.default]
+# This controls what version of Python you want to be the default
+python = "3.12"
+dependencies = ["pytest", "mypy"]
+
+[tool.hatch.envs.default.scripts]
+typing = [
+  "mkdir -p .mypy_cache",
+  "mypy --install-types --non-interactive src/fandb tests",
+]
+
+# This command is for updating all your lock files across all environments 
+update = ["hatch-pip-compile --upgrade --all"]
+
+release = ["hatch fmt", "typing", "hatch test --all --cover"]
+
+[tool.pytest.ini_options]
+addopts = ["--durations=5", "--color=yes"]
+testpaths = ["tests"]
+
 [tool.coverage.run]
-source_pkgs = ["fandb", "tests"]
+source_pkgs = ["fandb"]
 branch = true
 parallel = true
-omit = [
-  "src/fandb/__about__.py",
-]
+omit = ["src/fandb/__about__.py"]
 
 [tool.coverage.paths]
 fandb = ["src/fandb", "*/fandb/src/fandb"]
-tests = ["tests", "*/fandb/tests"]
 
 [tool.coverage.report]
-exclude_lines = [
-  "no cov",
-  "if __name__ == .__main__.:",
-  "if TYPE_CHECKING:",
+exclude_lines = ["no cov", "if __name__ == .__main__.:", "if TYPE_CHECKING:"]
+
+[tool.ruff.lint]
+isort.known-first-party = ["fandb"]
+exclude = ["./build", ".hatch", "private"]
+ignore = [
+  "F841",
+  "N812",
+  "TID252",
+  "FBT001",
+  "FBT002",
+  "ARG002",
+  "RUF012",
+  "T201",
+  "ARG001",
+  "TRY003",
+  "EM101",
+  "RUF009",
+  "S107",
+  "S311",
+  "INP001", # for cli
+  "G004",
+  "W291",
+  "W293",
+]
+
+[tool.ruff.lint.per-file-ignores]
+# Tests can use magic values, assertions, and relative imports
+"tests/**/*" = [
+  "PLR2004",
+  "S101",
+  "TID252",
+  "INP001",
+  "PT006",
+  "SLF001",
+  "PT012",
+  "B017",
+  "PT011",
+  "E712",
+]
+
+[tool.hatch.build]
+directory = "./build"
+
+
+[tool.hatch.envs.build-tools]
+# This version states what version your build tools build with.
+python = "3.12"
+detached = true
+skip-install = false
+dependencies = ["hatch", "hatch-pip-compile"]
+
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/fandb"]
+
+[tool.mypy]
+disable_error_code = [
+  "import-untyped",
+  "assignment",
+  "no-redef",
+  "arg-type",
+  "return-value",
+  "attr-defined",
+  "override",
+  "call-arg",
 ]

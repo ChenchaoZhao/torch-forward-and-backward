@@ -48,10 +48,15 @@ Source = "https://github.com/Chenchao Zhao/fandb"
 [tool.hatch.version]
 path = "src/fandb/__about__.py"
 
+[tool.hatch.env]
+requires = [
+  "hatch-pip-compile"
+]
+
 # --- DEFAULT ENVIRONMENT ---
 [tool.hatch.envs.default]
 type = "pip-compile"
-pip-compile-hashes = true
+pip-compile-hashes = false
 pip-compile-resolver = "uv"       # Fast resolution via uv
 python = "3.12"
 dependencies = ["pytest", "mypy"]

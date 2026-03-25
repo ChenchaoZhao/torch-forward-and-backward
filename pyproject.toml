@@ -7,7 +7,7 @@ name = "fandb"
 dynamic = ["version", "license"]
 description = 'PyTorch native distributed training for education.'
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.11,<3.13"
 keywords = []
 authors = [
   { name = "Chenchao Zhao", email = "35147961+ChenchaoZhao@users.noreply.github.com" },
@@ -48,26 +48,32 @@ Source = "https://github.com/Chenchao Zhao/fandb"
 [tool.hatch.version]
 path = "src/fandb/__about__.py"
 
-[tool.hatch.envs.types]
-extra-dependencies = ["pytest", "mypy"]
-[tool.hatch.envs.types.scripts]
-check = "mypy --install-types --non-interactive {args:src/fandb tests}"
-
+# --- DEFAULT ENVIRONMENT ---
 [tool.hatch.envs.default]
-# This controls what version of Python you want to be the default
+type = "pip-compile"
+pip-compile-hashes = true
+pip-compile-resolver = "uv"       # Fast resolution via uv
 python = "3.12"
 dependencies = ["pytest", "mypy"]
 
 [tool.hatch.envs.default.scripts]
-typing = [
-  "mkdir -p .mypy_cache",
-  "mypy --install-types --non-interactive src/fandb tests",
-]
+# Use this to refresh all lockfiles at once
+update = "hatch-pip-compile --upgrade --all"
 
-# This command is for updating all your lock files across all environments 
-update = ["hatch-pip-compile --upgrade --all"]
 
+# Unified typing command
+typing = "mypy --install-types --non-interactive src/fandb tests"
+
+# A clean release flow
 release = ["hatch fmt", "typing", "hatch test --all --cover"]
+
+# --- TYPES ENVIRONMENT ---
+[tool.hatch.envs.types]
+# Inherits everything from default, just adds a specific 'check' command
+# No need to re-list dependencies here
+
+[tool.hatch.envs.types.scripts]
+check = "typing" # Points back to the definition in default
 
 [tool.pytest.ini_options]
 addopts = ["--durations=5", "--color=yes"]

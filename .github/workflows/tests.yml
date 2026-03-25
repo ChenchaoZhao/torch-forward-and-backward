@@ -28,6 +28,9 @@ jobs:
 
       - name: Install hatch
         run: pip install hatch
+      
+      - name: Install pip compile
+        run: pip install hatch-pip-compile
 
       - name: Run type checking
         run: hatch run typing

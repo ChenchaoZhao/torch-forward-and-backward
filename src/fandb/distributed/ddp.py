@@ -137,8 +137,5 @@ class DistributedDataParallelConfig(ConfigMixin):
         torch_version = torch.__version__.split("+", 1)[0]
         py_ddp = "python_reducer" if torch_version >= "2.7" else "python_reducer_without_compiled_forward"
         torch._dynamo.config.optimize_ddp = py_ddp  # noqa: SLF001
-        # torch._dynamo.config.optimize_ddp = False
-        # c++ but does not work with sac
-        # torch._dynamo.config.optimize_ddp = "ddp_optimizer"
 
         logger.info(f"Use python ddp reducer for torch compile: {py_ddp}")

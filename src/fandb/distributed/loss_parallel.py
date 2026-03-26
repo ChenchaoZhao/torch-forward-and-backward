@@ -3,13 +3,7 @@ from abc import abstractmethod
 from typing import Protocol
 
 import torch
-import torch.distributed.tensor._random
 import torch.distributed.tensor.parallel
-
-# from torchtitan.config import CommConfig, DebugConfig, TORCH_DTYPE_MAP
-# from torchtitan.distributed.parallel_dims import ParallelDims
-# from torchtitan.tools.logging import logger
-# from torchtitan.tools.utils import device_module, device_type
 
 
 class TrainContext(Protocol):

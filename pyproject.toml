@@ -67,7 +67,7 @@ update = "hatch-pip-compile --upgrade --all"
 
 
 # Unified typing command
-typing = "mypy --install-types --non-interactive src/fandb tests"
+typing = "mypy --install-types --non-interactive src/"
 
 # A clean release flow
 release = ["hatch fmt", "typing", "hatch test --all --cover"]
@@ -162,3 +162,4 @@ disable_error_code = [
   "override",
   "call-arg",
 ]
+exclude = ["tests/"]

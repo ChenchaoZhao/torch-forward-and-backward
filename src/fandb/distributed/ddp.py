@@ -41,31 +41,24 @@ class DDPCommunicationHookType(StrEnum):
 
 @dataclass
 class DistributedDataParallelConfig(ConfigMixin):
-    """
-    Use this object in your [`Accelerator`] to customize how your model is
-    wrapped in a `torch.nn.parallel.DistributedDataParallel`. Please refer to
-    the documentation of this
-    [wrapper](https://pytorch.org/docs/stable/generated/torch.nn.parallel.DistributedDataParallel.html)
-    for more information on each argument.
+    """Configuration for DistributedDataParallel model wrapping.
 
-    <Tip warning={true}>
+    This class provides configuration options for wrapping PyTorch models with
+    DistributedDataParallel (DDP). It includes settings for communication hooks,
+    gradient compression, and various DDP-specific parameters that control
+    how distributed training is performed across multiple devices.
 
-    `gradient_as_bucket_view` is only available in PyTorch 1.7.0 and later
-    versions.
-
-    `static_graph` is only available in PyTorch 1.11.0 and later versions.
-
-    </Tip>
-
-    Example:
-
-    ```python
-    from accelerate import Accelerator
-    from accelerate.utils import DistributedDataParallelKwargs
-
-    kwargs = DistributedDataParallelKwargs(find_unused_parameters=True)
-    accelerator = Accelerator(kwargs_handlers=[kwargs])
-    ```
+    Attributes:
+        dim: The dimension to use for sharding.
+        broadcast_buffers: Whether to broadcast buffers from rank 0 to all other processes.
+        bucket_cap_mb: The bucket size in MB for gradient reduction.
+        find_unused_parameters: Whether to find unused parameters in the model.
+        check_reduction: Whether to check if gradients are correctly reduced.
+        gradient_as_bucket_view: Whether to use gradient as bucket view.
+        static_graph: Whether to use static graph optimization.
+        comm_hook: The communication hook type for gradient compression.
+        comm_wrapper: The communication wrapper type.
+        comm_state_option: Additional options for communication state.
     """
 
     dim: int = 0

@@ -2,8 +2,6 @@ import math
 from collections.abc import Iterable
 
 import torch
-import torch.distributed.tensor._random
-import torch.distributed.tensor.parallel
 from torch import distributed as dist
 from torch.distributed.device_mesh import DeviceMesh
 from torch.distributed.tensor import DTensor

@@ -29,6 +29,10 @@ GitHub Actions runs: `typing` → `test` on Python 3.11 and 3.12. Lint is NOT ru
 - **Toolchain**: hatch, uv, ruff, mypy, pytest
 - **Mypy**: excludes `tests/`, has many disabled error codes — do not add strict checking
 
+## Code Conventions
+
+- **No magic numbers** — define default constants at module top in `UPPER_SNAKE_CASE` with explicit types (e.g., `DEFAULT_INIT_TIMEOUT_SECONDS: int = 300`). Use them in function signatures or dataclass defaults. In tests, import these constants to assert default values instead of hard-coding them.
+
 ## Architecture
 
 - `src/fandb/distributed/` — DDP, device mesh, context parallel, loss parallel, grad norm, data loader

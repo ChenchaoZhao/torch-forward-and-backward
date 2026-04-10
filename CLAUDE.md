@@ -57,6 +57,7 @@ The fake backend (`utils.py`) enables local testing without actual distributed s
 - **All function signatures must be fully type-annotated** (parameters and return types).
 - **Flat over nested** — use early returns and guard clauses.
 - **One thing per function** — function does exactly what its name says.
+- **No magic numbers** — define default constants at module top in `UPPER_SNAKE_CASE` with explicit types. Use them in function signatures or dataclass defaults. In tests, import these constants to assert default values instead of hard-coding them.
 - Avoid `lambda` beyond trivial cases, bare `except:`, mutable default arguments, and `*args/**kwargs` without justification.
 - Any clever one-liner or magic must have a docstring or inline comment explaining what and why.
 - Do not silence `mypy` errors with `# type: ignore` without an explanatory comment.

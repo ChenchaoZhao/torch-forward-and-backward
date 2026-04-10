@@ -9,7 +9,7 @@ from fandb.components.configuration import (
 
 
 @dataclass
-class TestConfig(ConfigMixin):
+class SampleConfig(ConfigMixin):
     """Test configuration class for testing ConfigMixin functionality."""
 
     name: str
@@ -24,7 +24,7 @@ class TestConfigMixin:
     def test_to_dict_basic(self) -> None:
         """Test basic to_dict conversion."""
         # Arrange
-        config = TestConfig(name="test_app", port=8080, debug=True)
+        config = SampleConfig(name="test_app", port=8080, debug=True)
 
         # Act
         result = config.to_dict()
@@ -36,7 +36,7 @@ class TestConfigMixin:
     def test_to_dict_with_defaults(self) -> None:
         """Test to_dict with default values."""
         # Arrange
-        config = TestConfig(name="app", port=8080)
+        config = SampleConfig(name="app", port=8080)
 
         # Act
         result = config.to_dict()
@@ -51,7 +51,7 @@ class TestConfigMixin:
         data = {"name": "new_app", "port": 9000, "debug": True, "database": {"host": "remote", "port": 3306}}
 
         # Act
-        config = TestConfig.from_dict(data)
+        config = SampleConfig.from_dict(data)
 
         # Assert
         assert config.name == "new_app"
@@ -65,7 +65,7 @@ class TestConfigMixin:
         data = {"name": "minimal_app", "port": 8080}
 
         # Act
-        config = TestConfig.from_dict(data)
+        config = SampleConfig.from_dict(data)
 
         # Assert
         assert config.name == "minimal_app"
@@ -76,7 +76,7 @@ class TestConfigMixin:
     def test_to_dot_path_dict_simple(self) -> None:
         """Test to_dot_path_dict with simple structure."""
         # Arrange
-        config = TestConfig(name="app", port=8080)
+        config = SampleConfig(name="app", port=8080)
 
         # Act
         result = config.to_dot_path_dict()
@@ -88,7 +88,7 @@ class TestConfigMixin:
     def test_to_dot_path_dict_custom_separator(self) -> None:
         """Test to_dot_path_dict with custom separator."""
         # Arrange
-        config = TestConfig(name="app", port=8080)
+        config = SampleConfig(name="app", port=8080)
 
         # Act
         result = config.to_dot_path_dict(dot_char="_")
@@ -103,7 +103,7 @@ class TestConfigMixin:
         data = {"name": "dot_app", "port": 7000, "debug": True, "database.host": "remote", "database.port": 3306}
 
         # Act
-        config = TestConfig.from_dot_path_dict(data)
+        config = SampleConfig.from_dot_path_dict(data)
 
         # Assert
         assert config.name == "dot_app"
@@ -117,7 +117,7 @@ class TestConfigMixin:
         data = {"name": "custom_app", "port": 6000, "database_host": "custom_host", "database_port": 5433}
 
         # Act
-        config = TestConfig.from_dot_path_dict(data, dot_char="_")
+        config = SampleConfig.from_dot_path_dict(data, dot_char="_")
 
         # Assert
         assert config.name == "custom_app"

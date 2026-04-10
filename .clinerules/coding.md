@@ -69,6 +69,37 @@ def get_user(id): ...
 | Mutable default arguments | `None` with guard |
 | Bare `except:` | `except SomeError as e:` |
 
+## No Magic Numbers
+
+Define any default constants at the top of the module in UPPER_SNAKE_CASE with explicit types. Use these constants in function signatures or dataclass defaults instead of hard-coding values.
+
+```python
+# Good
+DEFAULT_INIT_TIMEOUT_SECONDS: int = 300
+
+def init(timeout: int = DEFAULT_INIT_TIMEOUT_SECONDS) -> None: ...
+
+# Good — dataclass defaults
+DEFAULT_BATCH_SIZE: int = 32
+
+@dataclass
+class Config:
+    batch_size: int = DEFAULT_BATCH_SIZE
+```
+
+**In tests**, import these constants to assert default values instead of hard-coding them:
+
+```python
+# Good
+from fandb.some_module import DEFAULT_BATCH_SIZE
+
+def test_default_batch_size():
+    assert config.batch_size == DEFAULT_BATCH_SIZE
+
+# Bad
+assert config.batch_size == 32
+```
+
 ## Magic and One-Liners
 
 Occasional clever code is acceptable when it meaningfully improves performance or reduces boilerplate — but it **must** have a docstring or inline comment explaining what it does and why.

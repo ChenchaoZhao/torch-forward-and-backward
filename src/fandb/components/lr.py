@@ -14,16 +14,22 @@ class SchedulerNameEnum(StrEnum):
     CONSTANT = auto()
 
 
-@dataclass
-class LrSchedulerConfig(ConfigMixin):
-    """Learning rate scheduler configuration.
+DEFAULT_WARMUP_FRACTION: float = 0.2
+
+_LR_SCHEDULER_CONFIG_DOC = f"""
+    Learning rate scheduler configuration.
 
     Attributes:
-        warmup_fraction: Fraction of training steps for warmup (0.0 to 1.0)
+        warmup_fraction: Fraction of training steps for warmup (0.0 to 1.0, Defaults to {DEFAULT_WARMUP_FRACTION})
         name: Type of learning rate scheduler to use
-    """
+"""
 
-    warmup_fraction: float = 0.2
+
+@dataclass
+class LrSchedulerConfig(ConfigMixin):
+    __doc__ = _LR_SCHEDULER_CONFIG_DOC
+
+    warmup_fraction: float = DEFAULT_WARMUP_FRACTION
     name: SchedulerNameEnum = SchedulerNameEnum.LINEAR
 
     def __post_init__(self):

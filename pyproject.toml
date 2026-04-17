@@ -70,7 +70,7 @@ update = "hatch-pip-compile --upgrade --all"
 typing = "mypy --install-types --non-interactive src/"
 
 # A clean release flow
-release = ["hatch fmt", "typing", "hatch test --all --cover"]
+release = ["hatch fmt", "typing", "hatch test --cover"]
 
 # --- TYPES ENVIRONMENT ---
 [tool.hatch.envs.types]

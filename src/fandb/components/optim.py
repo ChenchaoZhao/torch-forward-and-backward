@@ -28,24 +28,28 @@ class ParamGroup(TypedDict):
     weight_decay: NotRequired[float]
 
 
+DEFAULT_LR: float = 1e-3
+DEFAULT_BETA1: float = 0.9
+DEFAULT_BETA2: float = 0.999
+DEFAULT_EPS: float = 1e-8
+DEFAULT_WEIGHT_DECAY: float = 0.01
+
 OptimParamPolicy = Callable[[Module, "OptimizerConfig"], list[ParamGroup]]
 
 
-@dataclass
-class OptimizerConfig(ConfigMixin):
-    """
+_OPTIMIZER_CONFIG_DOC = f"""
     Configuration for optimizer settings.
 
     Attributes:
         name: Optimizer to use (default: ADAMW)
-        lr: Learning rate to use (default: 8e-4)
-        beta1: Exponential moving average hyperparameter (default: 0.9)
-        beta2: Exponential moving average hyperparameter (default: 0.999)
+        lr: Learning rate to use (Defaults to {DEFAULT_LR})
+        beta1: Exponential moving average hyperparameter (Defaults to {DEFAULT_BETA1})
+        beta2: Exponential moving average hyperparameter (Defaults to {DEFAULT_BETA2})
             - torch beta2 default: 0.999
             - torchtitan beta2 default: 0.95
             Smaller beta2 is chosen when batch size is very large
-        eps: Epsilon value to use (default: 1e-8)
-        weight_decay: Weight decay to use (default: 0.1)
+        eps: Epsilon value to use (Defaults to {DEFAULT_EPS})
+        weight_decay: Weight decay to use (Defaults to {DEFAULT_WEIGHT_DECAY})
             - torch default: 0.01
             - torchtitan default: 0.1
         implementation: Optimizer implementation to use (default: FUSED)
@@ -53,14 +57,19 @@ class OptimizerConfig(ConfigMixin):
             - 'foreach': Use some horizontal fusion of tensors for better performance.
             - 'for-loop': Use the default implementation for the optimizer (slowest).
             - more info: https://pytorch.org/docs/stable/optim.html
-    """
+"""
+
+
+@dataclass
+class OptimizerConfig(ConfigMixin):
+    __doc__ = _OPTIMIZER_CONFIG_DOC
 
     name: OptimizerNameEnum = OptimizerNameEnum.ADAMW
-    lr: float = 8e-4
-    beta1: float = 0.9
-    beta2: float = 0.999
-    eps: float = 1e-8
-    weight_decay: float = 0.1
+    lr: float = DEFAULT_LR
+    beta1: float = DEFAULT_BETA1
+    beta2: float = DEFAULT_BETA2
+    eps: float = DEFAULT_EPS
+    weight_decay: float = DEFAULT_WEIGHT_DECAY
     implementation: OptimizerImplementation = OptimizerImplementation.FUSED
 
     def __post_init__(self):

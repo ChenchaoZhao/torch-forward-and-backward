@@ -2,6 +2,11 @@ import torch
 from torch import nn
 
 from fandb.components.optim import (
+    DEFAULT_BETA1,
+    DEFAULT_BETA2,
+    DEFAULT_EPS,
+    DEFAULT_LR,
+    DEFAULT_WEIGHT_DECAY,
     OptimizerConfig,
     OptimizerImplementation,
     OptimizerNameEnum,
@@ -48,27 +53,27 @@ class TestOptimizerConfigDefaults:
     def test_default_lr(self) -> None:
         """Test default learning rate."""
         config = OptimizerConfig()
-        assert config.lr == 8e-4
+        assert config.lr == DEFAULT_LR
 
     def test_default_beta1(self) -> None:
         """Test default beta1 value."""
         config = OptimizerConfig()
-        assert config.beta1 == 0.9
+        assert config.beta1 == DEFAULT_BETA1
 
     def test_default_beta2(self) -> None:
         """Test default beta2 value."""
         config = OptimizerConfig()
-        assert config.beta2 == 0.999
+        assert config.beta2 == DEFAULT_BETA2
 
     def test_default_eps(self) -> None:
         """Test default epsilon value."""
         config = OptimizerConfig()
-        assert config.eps == 1e-8
+        assert config.eps == DEFAULT_EPS
 
     def test_default_weight_decay(self) -> None:
         """Test default weight decay value."""
         config = OptimizerConfig()
-        assert config.weight_decay == 0.1
+        assert config.weight_decay == DEFAULT_WEIGHT_DECAY
 
     def test_default_implementation(self) -> None:
         """Test default implementation is FUSED."""

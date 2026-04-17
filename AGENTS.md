@@ -32,6 +32,19 @@ GitHub Actions runs: `typing` → `test` on Python 3.11 and 3.12. Lint is NOT ru
 ## Code Conventions
 
 - **No magic numbers** — define default constants at module top in `UPPER_SNAKE_CASE` with explicit types (e.g., `DEFAULT_INIT_TIMEOUT_SECONDS: int = 300`). Use them in function signatures or dataclass defaults. In tests, import these constants to assert default values instead of hard-coding them.
+- **Docstring defaults** — use string templating for docstrings that reference constants:
+
+  ```python
+  DEFAULT_LR: float = 8e-4
+  
+  _OPTIMIZER_CONFIG_DOC = f"Learning rate (Defaults to {DEFAULT_LR})"
+  
+  @dataclass
+  class OptimizerConfig:
+      __doc__ = _OPTIMIZER_CONFIG_DOC
+  ```
+
+  This ensures docstrings stay in sync with actual default values.
 
 ## Architecture
 

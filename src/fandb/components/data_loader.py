@@ -17,8 +17,8 @@ DEFAULT_PIN_MEMORY: bool = True
 DEFAULT_PREFETCH_FACTOR: int | None = 2
 DEFAULT_TIMEOUT: float = 0
 
-_worker_init_fn_t = Callable[[int], None]
-_collate_fn_t = Callable[[list], Any]
+WorkerInitFn = Callable[[int], None]
+CollateFn = Callable[[list], Any]
 
 
 _DATA_LOADER_CONFIG_DOC = f"""
@@ -72,8 +72,8 @@ class DataLoaderConfig(ConfigMixin):
         dataset: Dataset,
         sampler: Sampler | Iterable | None = None,
         batch_sampler: Sampler[list] | Iterable[list] | None = None,
-        collate_fn: _collate_fn_t | None = None,
-        worker_init_fn: _worker_init_fn_t | None = None,
+        collate_fn: CollateFn | None = None,
+        worker_init_fn: WorkerInitFn | None = None,
         multiprocessing_context: str | None = None,
         generator: Generator | None = None,
     ) -> DataLoader:
